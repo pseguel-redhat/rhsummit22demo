@@ -1,0 +1,16 @@
+---
+Org_Name: Casa
+Net_Name: Meraki Firewall
+rules:
+  - type: application_category
+    application:
+      #id: meraki:layer7/category/27
+      name: Advertising
+  # - type: application_category
+  #   application:
+  #     #id: meraki:layer7/category/27
+  #     name: Sports
+  #   policy: allow
+
+
+  
