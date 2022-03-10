@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  vars_files: 
+    - firewall.yml
+  
+  tasks:
+    - name: Read Firewall Status Rules
+      cisco.meraki.meraki_mx_l7_firewall:
+        auth_key: "{{ meraki_key }}"
+        org_name: "{{ Org_Name }}"
+        net_name: "{{ Net_Name }}"
+        state: query
+      delegate_to: localhost
