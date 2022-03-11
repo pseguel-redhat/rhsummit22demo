@@ -20,3 +20,10 @@
         psk: "{{ item.psk }}" 
       delegate_to: localhost
       loop: "{{ SSID }}"
+      register: applied_changes
+
+    - name: Save info for next steps
+      set_stats: 
+        data:
+          change_req_id: "{{ change_req.record.number }}"
+          applied_changes: "{{ applied_changes }}"

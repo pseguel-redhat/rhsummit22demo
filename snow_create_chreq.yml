@@ -25,4 +25,9 @@
         description: "{{ description | default('This is just a Demo Change Request created by Ansible') }}"
         category: network
         other:
-      register: change
+      register: change_req
+
+    - name: Save info for next steps
+      set_stats: 
+        data:
+          change_req_id: "{{ change_req.record.number }}"
