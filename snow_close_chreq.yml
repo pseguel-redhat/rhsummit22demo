@@ -8,6 +8,6 @@
         state: closed
         type: standard
         number: "{{ change_req_id }}"
-        close_code: successfull
+        close_code: successful
         close_notes: |
           {{ applied_changes }}
