@@ -25,5 +25,5 @@
     - name: Save info for next steps
       set_stats: 
         data:
-          change_req_id: "{{ change_req.record.number }}"
+          change_req_id: "{{ change_req_id }}"
           applied_changes: "{{ applied_changes }}"
