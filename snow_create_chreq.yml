@@ -1,6 +1,6 @@
 ---
 - hosts: localhost
-  gather_facts: no
+  gather_facts: yes
 
   # defined vars needed:
   # - description  --> Should include commit id from GitHub repo
@@ -27,7 +27,37 @@
         other:
       register: change_req
 
+    - name: set value of new change request'
+      set_fact:
+        change_req_id: "{{ change_req.record.number }}"
+
+    - name: Change state Change Request on snow - schedule
+      servicenow.itsm.change_request:
+        state: scheduled
+        type: standard
+        number: "{{ change_req_id }}"
+        assignment_group: Hardware
+        other: 
+          expected_start: "{{ ansible_date_time.date }}"
+      register: change_req
+
+    - name: Change state Change Request on snow - implement
+      servicenow.itsm.change_request:
+        state: implement
+        type: standard
+        number: "{{ change_req_id }}"
+        assignment_group: Hardware
+      register: change_req
+
+    - name: Change state Change Request on snow - review
+      servicenow.itsm.change_request:
+        state: review
+        type: standard
+        number: "{{ change_req_id }}"
+        assignment_group: Hardware
+      register: change_req
+
     - name: Save info for next steps
       set_stats: 
         data:
-          change_req_id: "{{ change_req.record.number }}"
+          change_req_id: "{{ change_req_id }}"

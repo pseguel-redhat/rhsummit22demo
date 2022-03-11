@@ -1,13 +1,13 @@
 ---
 - hosts: localhost
-  gather_facts: no
+  gather_facts: yes
 
   tasks:
     - name: Close Change Request on SNow
       servicenow.itsm.change_request:
         state: closed
-        type: standard
         number: "{{ change_req_id }}"
+        assignment_group: Hardware
         close_code: successful
         close_notes: |
           {{ applied_changes }}
