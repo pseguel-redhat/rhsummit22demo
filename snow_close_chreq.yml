@@ -10,4 +10,4 @@
         assignment_group: Hardware
         close_code: successful
         close_notes: |
-          {{ applied_changes }}
+          {{ applied_changes | to_nice_json}}
