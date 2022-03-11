@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Close Change Request on SNow
+      servicenow.itsm.change_request:
+        state: closed
+        type: standard
+        number: "{{ change_req_id }}"
+        close_code: successfull
+        close_notes: |
+          {{ applied_changes }}
