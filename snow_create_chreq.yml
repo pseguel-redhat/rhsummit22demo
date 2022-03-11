@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  gather_facts: no
+
+  # defined vars needed:
+  # - description  --> Should include commit id from GitHub repo
+  # - description_short
+  # - change_req_template
+  # these should come from a previous playbook/workflow step
+
+  vars:
+    description_short: "Update SSIDs - From GitHub Repo {{ tower_webhook_payload.repository.name }}"
+    description: >
+      Update SSIDs. Triggered by GitHub event in repository {{ tower_webhook_payload.repository.name }}
+      Short commit id: {{ tower_webhook_payload.after }}
+      Full commit id: {{ tower_webhook_payload.after[:5] }}
+      Commit by: {{ tower_webhook_payload.head_commit.author }}
+
+  tasks:
+    - name: Create Change Request on snow
+      servicenow.itsm.change_request:
+        state: new
+        type: standard
+        short_description: "{{ description_short | default('Demo change request') }}"
+        description: "{{ description | default('This is just a Demo Change Request created by Ansible') }}"
+        category: network
+        other:
+      register: change
