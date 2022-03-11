@@ -13,7 +13,7 @@
     description: |
       Update SSIDs. Triggered by GitHub event in repository {{ tower_webhook_payload.repository.name | default('TEST') }}
       Short commit id: {{ tower_webhook_payload.after | default('TEST COMMIT ID SHORT') }}
-      Full commit id: {{ tower_webhook_payload.after[:5] | default('TEST COMMIT ID') }}
+      Full commit id: {{ tower_webhook_payload.after[:7] | default('TEST COMMIT ID') }}
       Commit by: {{ tower_webhook_payload.head_commit.author.name | default('TEST NAME') }}
 
   tasks:
