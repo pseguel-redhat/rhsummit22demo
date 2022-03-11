@@ -9,12 +9,12 @@
   # these should come from a previous playbook/workflow step
 
   vars:
-    description_short: "Update SSIDs - From GitHub Repo {{ tower_webhook_payload.repository.name }}"
+    description_short: "Update SSIDs - From GitHub Repo {{ tower_webhook_payload.repository.name | default('TEST') }}"
     description: >
-      Update SSIDs. Triggered by GitHub event in repository {{ tower_webhook_payload.repository.name }}
-      Short commit id: {{ tower_webhook_payload.after }}
-      Full commit id: {{ tower_webhook_payload.after[:5] }}
-      Commit by: {{ tower_webhook_payload.head_commit.author }}
+      Update SSIDs. Triggered by GitHub event in repository {{ tower_webhook_payload.repository.name | default('TEST') }}
+      Short commit id: {{ tower_webhook_payload.after | default('TEST') }}
+      Full commit id: {{ tower_webhook_payload.after[:5] | default('TEST') }}
+      Commit by: {{ tower_webhook_payload.head_commit.author | default('TEST') }}
 
   tasks:
     - name: Create Change Request on snow
