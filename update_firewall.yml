@@ -8,17 +8,17 @@
   tasks:
     - name: Get current file
       set_fact:
-        wireless: "{{ src | from_yaml }}"
+        firewall: "{{ src | from_yaml }}"
       vars:
         src: "{{ lookup('url', file_url, split_lines='no') }}"
 
     - name: update L7 Firewall Rules
       cisco.meraki.meraki_mx_l7_firewall:
         auth_key: "{{ meraki_key }}"
-        org_name: "{{ Org_Name }}"
-        net_name: "{{ Net_Name }}"
+        org_name: "{{ firewall.Org_Name }}"
+        net_name: "{{ firewall.Net_Name }}"
         state: "{{ item.state | default('present') }}"
-        rules: "{{ rules }}"
+        rules: "{{ firewall.rules }}"
       register: applied_changes
 
     - name: Save info for next steps
