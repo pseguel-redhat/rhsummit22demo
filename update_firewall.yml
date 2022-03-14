@@ -19,6 +19,7 @@
         net_name: "{{ Net_Name }}"
         state: "{{ item.state | default('present') }}"
         rules: "{{ rules }}"
+      register: applied_changes
 
     - name: Save info for next steps
       set_stats: 
