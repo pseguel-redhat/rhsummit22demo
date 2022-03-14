@@ -11,7 +11,7 @@ SSID:
     psk: Ansible123456!
   - name: MyCompany_contractors
     number: 3
-    state: absent
+    state: present
     enabled: false
     auth_mode: psk
     encryption_mode: wpa
