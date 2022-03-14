@@ -1,0 +1,69 @@
+organization: Default
+project:
+  name: NetGitOps Project
+  git_url: https://github.com/pseguel-redhat/rhsummit22demo
+  organization: "{{ organization }}"
+  job_templates:
+    - name: Config SSIDs
+      playbook: update_wireless.yml
+      credentials: Meraki Credentials
+      inventory: Workshop Inventory
+      webhook_service: github
+      webhook_credential: GitHub PAT
+    - name: Config Firewall
+      playbook: update_firewall.yml
+      credentials: Meraki Credentials
+      inventory: Workshop Inventory
+      webhook_service: github
+      webhook_credential: GitHub PAT
+    - name: Create Change Request Service Now
+      playbook: snow_create_chreq.yml
+      credentials: ServiceNow Credentials
+      inventory: Workshop Inventory
+    - name: Close Change Request Service Now
+      playbook: snow_close_chreq.yml
+      credentials: ServiceNow Credentials
+      inventory: Workshop Inventory
+  workflows:
+    - name: GitOps - Wireless changes
+      description: Demo Gitops + SNow - Wireless
+    - name: GitOps - Firewall changes
+      description: Demo Gitops + SNow - Wireless
+credential_types:
+  - name: ServiceNow
+    description: Credentials type for ServiceNow
+    kind: cloud
+    inputs: 
+      fields:
+        - id: SNOW_INSTANCE
+          type: string
+          label: Service Now Instance Name (devXXXXX)
+        - id: SNOW_USERNAME
+          type: string
+          label: Service Now Username
+        - id: SNOW_PASSWORD
+          type: string
+          label: Service Now Password
+          secret: true
+      required:
+        - SNOW_USERNAME
+        - SNOW_INSTANCE
+        - SNOW_PASSWORD
+    injectors:
+      env:
+        SN_HOST: "{{ 'https://{{ SNOW_INSTANCE }}.service-now.com' }}"
+        SN_PASSWORD: "{{ '{{ SNOW_PASSWORD }}' }}"
+        SN_USERNAME: "{{ '{{ SNOW_USERNAME }}' }}"
+  - name: Meraki
+    description: Credentials for Meraki Dashboard API
+    kind: cloud
+    inputs:
+      fields:
+        - id: MERAKI_KEY
+          type: string
+          label: Meraki Dashboard API key 
+          secret: true
+    injectors:
+      extra_vars:
+        meraki_key: "{{ '{{ MERAKI_KEY }}' }}"
+          

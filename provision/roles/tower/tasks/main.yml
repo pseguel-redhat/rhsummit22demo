@@ -1,0 +1,87 @@
+---
+- name: Create Snow Credential Types
+  awx.awx.credential_type:
+    name: "{{ credential_types[0].name }}"
+    description: "{{ credential_types[0].description }}"
+    kind: "{{ credential_types[0].kind }}"
+    inputs: "{{ credential_types[0].inputs }}"
+    injectors: "{{ credential_types[0].injectors }}"
+    state: present
+
+- name: Create Meraki API Credential Types
+  awx.awx.credential_type:
+    name: "{{ credential_types[1].name }}"
+    description: "{{ credential_types[1].description }}"
+    kind: "{{ credential_types[1].kind }}"
+    inputs: "{{ credential_types[1].inputs }}"
+    injectors: "{{ credential_types[1].injectors }}"
+    state: present
+ 
+- name: Add ServiceNow Credentials
+  awx.awx.tower_credential:
+    name: ServiceNow Credentials
+    description: "Credentials for ServiceNow environment"
+    credential_type: ServiceNow
+    organization: "{{ organization }}"
+    inputs:
+      SNOW_INSTANCE: "{{ snow_instance }}"
+      SNOW_PASSWORD: "{{ snow_password }}"
+      SNOW_USERNAME: "{{ snow_username }}"
+
+- name: Add Meraki API Credentials
+  awx.awx.tower_credential:
+    name: Meraki Credentials
+    description: "Credentials for Meraki Dashboard API"
+    credential_type: Meraki
+    organization: "{{ organization }}"
+    inputs:
+      MERAKI_KEY: "{{ meraki_key }}"
+
+- name: Add GitHub PAT
+  awx.awx.tower_credential:
+    name: GitHub PAT
+    description: "Credentials for GitHub Webhooks"
+    credential_type: GitHub Personal Access Token
+    organization: "{{ organization }}"
+    inputs:
+      token: "{{ github_pat }}"
+
+- name: Add Ansible Controller Project
+  awx.awx.tower_project:
+    name: "{{ project.name }}"
+    organization: "{{ organization }}"
+    scm_type: git
+    scm_url: "{{ project.git_url }}"
+    state: present
+
+- name: Add Job Templates
+  awx.awx.tower_job_template:
+    name: "{{ item.name }}"
+    job_type: run
+    organization: "{{ organization }}"
+    inventory: "{{ item.inventory }}"
+    project: "{{ project.name }}"
+    playbook: "{{ item.playbook }}"
+    credentials: "{{ item.credentials }}"
+    webhook_service: "{{ item.webhook_service | default(omit) }}"
+    webhook_credential: "{{ item.webhook_credential | default(omit) }}"
+    state: present
+  register: job_templates
+  loop: "{{ project.job_templates }}"
+  tags: job_templates
+
+- name: Set Job Template Webhook token
+  set_fact:
+    job_template_webhook_token: "{{ lookup('awx.awx.controller_api', webhook_id_path ) }}"
+    job_template_webhook_url: "{{ lookup('env', 'CONTROLLER_HOST') }}/job_templates/{{ job_template_id }}/github/"
+  vars:
+    job_template_id: "{{ job_templates.results[0].id }}"
+    webhook_id_path: "job_templates/{{ job_template_id }}/webhook_key/"
+  tags: job_templates
+
+- name: Create workflow Job Templates
+  awx.awx.tower_workflow_job_template:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+  loop: "{{ project.workflows }}"
+  tags: workflows
