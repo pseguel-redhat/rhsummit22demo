@@ -2,10 +2,16 @@
 - hosts: localhost
   gather_facts: no 
   
-  vars_files: 
-    - firewall.yml
+  vars: 
+    file_url: https://raw.githubusercontent.com/pseguel-redhat/rhsummitdemo_firewall/main/firewall.yml
   
   tasks:
+    - name: Get current file
+      set_fact:
+        wireless: "{{ src | from_yaml }}"
+      vars:
+        src: "{{ lookup('url', file_url, split_lines='no') }}"
+
     - name: update L7 Firewall Rules
       cisco.meraki.meraki_mx_l7_firewall:
         auth_key: "{{ meraki_key }}"
