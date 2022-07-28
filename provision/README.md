@@ -10,6 +10,11 @@ change the values:
 - ServiceNow environment (XXXX from https://
 - ServiceNow credentials (admin/xxxxxx) 
 
+Or set the following environmental vars:
+- SN_HOST
+- SN_USERNAME
+- SN_PASSWORD
+
 Steps are as follows:
 - Create a new Credential Type for Service Now
 - Create a new Service Now Credential
