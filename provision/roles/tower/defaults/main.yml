@@ -1,0 +1,4 @@
+---
+snow_instance: "{{ lookup('env', 'SN_HOST') }}" 
+snow_username: "{{ lookup('env', 'SN_USERNAME') }}" 
+snow_password: "{{ lookup('env', 'SN_PASSWORD') }}" 
