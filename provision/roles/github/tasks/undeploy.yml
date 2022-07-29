@@ -1,0 +1,18 @@
+---
+- name: Create GitHub Repo for Wireless files
+  community.general.github_repo:
+    access_token: "{{ github_token }}"
+    name: "{{ wireless_github_repo_name }}"
+    description: "{{ wireless_github_repo_descr }}"
+    private: no
+    state: absent
+  tags: github
+
+- name: Create GitHub Repo for Firewall files
+  community.general.github_repo:
+    access_token: "{{ github_token }}"
+    name: "{{ firewall_github_repo_name }}"
+    description: "{{ firewall_github_repo_descr }}"
+    private: no
+    state: absent
+  tags: github

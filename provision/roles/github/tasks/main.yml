@@ -1,0 +1,10 @@
+---
+- name: Deploy tasks
+  include_tasks: deploy.yml
+  when: deploy | bool
+  tags: githubs
+
+- name: Undeploy tasks
+  include_tasks: undeploy.yml
+  when: deploy | bool == false
+  tags: github

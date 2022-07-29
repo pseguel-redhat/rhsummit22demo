@@ -1,0 +1,6 @@
+---
+deploy: true
+wireless_github_repo_name: rhsummitdemo_wireless
+wireless_github_repo_descr: Red Hat Summit 2022 - GitOps repo for Wireless Tasks
+firewall_github_repo_name: rhsummitdemo_firewall
+firewall_github_repo_descr: Red Hat Summit 2022 - GitOps repo for Firewall Tasks
