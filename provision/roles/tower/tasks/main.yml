@@ -73,11 +73,13 @@
 - name: Set Job Template Webhook token
   set_fact:
     job_template_webhook_token: "{{ lookup('awx.awx.controller_api', webhook_id_path ) }}"
-    job_template_webhook_url: "{{ lookup('env', 'CONTROLLER_HOST') }}/job_templates/{{ job_template_id }}/github/"
+    job_template_webhook_url: "{{ lookup('env', 'CONTROLLER_HOST') }}{{ lookup('awx.awx.controller_api', webhook_receiver ).related.webhook_receiver }}"
   vars:
-    job_template_id: "{{ job_templates.results[0].id }}"
     webhook_id_path: "job_templates/{{ job_template_id }}/webhook_key/"
-  tags: job_templates
+    webhook_receiver: "job_templates/{{ job_template_id }}"
+  tags: 
+    - job_templates
+    - webhook_info
 
 - name: Create workflow Job Templates
   awx.awx.tower_workflow_job_template:
