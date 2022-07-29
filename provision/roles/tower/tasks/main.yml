@@ -37,7 +37,7 @@
     inputs:
       MERAKI_KEY: "{{ meraki_key }}"
 
-- name: Add GitHub PAT
+- name: Add GitHub PAT Credential
   awx.awx.tower_credential:
     name: GitHub PAT
     description: "Credentials for GitHub Webhooks"

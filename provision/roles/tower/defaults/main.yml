@@ -1,4 +1,5 @@
 ---
+github_pat: "{{ lookup('env', 'GITHUB_PAT') }}"
 meraki_key: "{{ lookup('env', 'MERAKI_KEY') }}"
 snow_instance: "{{ lookup('env', 'SN_HOST') }}" 
 snow_username: "{{ lookup('env', 'SN_USERNAME') }}" 
