@@ -72,7 +72,7 @@
 
 - name: Set Job Template Webhook token
   set_fact:
-    job_template_webhook_token: "{{ lookup('awx.awx.controller_api', webhook_id_path ) }}"
+    job_template_webhook_token: "{{ lookup('awx.awx.controller_api', webhook_id_path ).webhook_key }}"
     job_template_webhook_url: "{{ lookup('env', 'CONTROLLER_HOST') }}{{ lookup('awx.awx.controller_api', webhook_receiver ).related.webhook_receiver }}"
   vars:
     job_template_id: "{{ job_templates.results[0].id }}"
