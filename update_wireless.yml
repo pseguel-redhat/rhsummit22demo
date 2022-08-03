@@ -2,8 +2,9 @@
 - hosts: localhost
   gather_facts: no
 
-  vars: 
-    file_url: "https://raw.githubusercontent.com/pseguel-redhat/rhsummitdemo_wireless/main/wireless.yml"
+  vars:
+    # tower_webhook_event_ref viene del webhook de git
+    file_url: "https://raw.githubusercontent.com/pseguel-redhat/rhsummitdemo_wireless/{{ tower_webhook_event_ref | default('main') }}/wireless.yml"
 
   tasks:
     - name: Get current file
